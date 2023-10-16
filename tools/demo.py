@@ -124,7 +124,7 @@ def demo(cfg):
         tr.MultiToTensor()
     ])
     image_root = os.path.join(cfg.TEST_DATA_PATH, 'images')
-    label_root = os.path.join(cfg.TEST_DATA_PATH, 'masks')
+    label_root = os.path.join(cfg.TEST_DATA_PATH, 'labels')
 
     sequences = os.listdir(image_root)
     seq_datasets = []
@@ -250,11 +250,11 @@ def main():
 
     parser.add_argument('--gpu_id', type=int, default=0)
 
-    parser.add_argument('--data_path', type=str, default='./datasets/Demo')
-    parser.add_argument('--output_path', type=str, default='./demo_output')
+    parser.add_argument('--data_path', type=str, default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/Dataset')
+    parser.add_argument('--output_path', type=str, default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/Dataset/results')
     parser.add_argument('--ckpt_path',
                         type=str,
-                        default='./pretrain_models/SwinB_DeAOTL_PRE_YTB_DAV.pth')
+                        default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/weights/SwinB_DeAOTL_PRE_YTB_DAV.pth')
 
     parser.add_argument('--max_resolution', type=float, default=480 * 1.3)
 
