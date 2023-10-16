@@ -246,7 +246,7 @@ def main():
     parser.add_argument('--exp_name', type=str, default='default')
 
     parser.add_argument('--stage', type=str, default='pre_ytb_dav')
-    parser.add_argument('--model', type=str, default='r50_aotl')
+    parser.add_argument('--model', type=str, default='swinb_deaotl')
 
     parser.add_argument('--gpu_id', type=int, default=0)
 
@@ -254,7 +254,7 @@ def main():
     parser.add_argument('--output_path', type=str, default='./demo_output')
     parser.add_argument('--ckpt_path',
                         type=str,
-                        default='./pretrain_models/R50_AOTL_PRE_YTB_DAV.pth')
+                        default='./pretrain_models/SwinB_DeAOTL_PRE_YTB_DAV.pth')
 
     parser.add_argument('--max_resolution', type=float, default=480 * 1.3)
 
