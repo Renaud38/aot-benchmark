@@ -256,7 +256,7 @@ def main():
                         type=str,
                         default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/weights/SwinB_DeAOTL_PRE_YTB_DAV.pth')
 
-    parser.add_argument('--max_resolution', type=float, default=480 * 1.3)
+    parser.add_argument('--max_resolution', type=float, default=480 * 5)
 
     parser.add_argument('--amp', action='store_true')
     parser.set_defaults(amp=False)
