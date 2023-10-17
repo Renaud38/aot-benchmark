@@ -111,8 +111,9 @@ def demo(cfg):
     model = build_vos_model(cfg.MODEL_VOS, cfg).cuda()
     
     print('Load checkpoint from {}'.format(cfg.TEST_CKPT_PATH))
-    model, _ = load_network(model, cfg.TEST_CKPT_PATH, gpu_id)
-
+    #model, _ = load_network(model, cfg.TEST_CKPT_PATH, gpu_id)
+    model, _ = load_network(model, cfg.TEST_CKPT_PATH)
+    
     print('Build AOT engine.')
     engine = build_engine(cfg.MODEL_ENGINE,
                           phase='eval',
