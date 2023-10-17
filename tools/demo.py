@@ -102,11 +102,14 @@ def overlay(image, mask, colors=[255, 0, 0], cscale=1, alpha=0.4):
 def demo(cfg):
     video_fps = 15
     gpu_id = cfg.TEST_GPU_ID
+    #device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     
     # Load pre-trained model
     print('Build AOT model.')
-    model = build_vos_model(cfg.MODEL_VOS, cfg).cuda(gpu_id)
-
+    #model = build_vos_model(cfg.MODEL_VOS, cfg).cuda(gpu_id)
+    model = build_vos_model(cfg.MODEL_VOS, cfg).cuda()
+    
     print('Load checkpoint from {}'.format(cfg.TEST_CKPT_PATH))
     model, _ = load_network(model, cfg.TEST_CKPT_PATH, gpu_id)
 
