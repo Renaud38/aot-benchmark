@@ -1,6 +1,7 @@
 import importlib
 import sys
 import os
+import nvidia_smi ## RS EDIT
 
 sys.path.append('.')
 sys.path.append('..')
@@ -102,6 +103,11 @@ def demo(cfg):
     video_fps = 15
     gpu_id = cfg.TEST_GPU_ID
 
+    nvidia_smi.nvmlInit()
+    handle = nvidia_smi.nvmlDeviceGetHandleByIndex(gpu_id)
+    # card id 0 hardcoded here, there is also a call to get all available card ids, so we could iterate
+    info = nvidia_smi.nvmlDeviceGetMemoryInfo(handle)
+    
     # Load pre-trained model
     print('Build AOT model.')
     model = build_vos_model(cfg.MODEL_VOS, cfg).cuda(gpu_id)
@@ -169,6 +175,9 @@ def demo(cfg):
         engine.restart_engine()
         with torch.no_grad():
             for frame_idx, samples in enumerate(seq_dataloader):
+                print("Total memory:", info.total)
+                print("Free memory:", info.free)
+                print("Used memory:", info.used)
                 sample = samples[0]
                 img_name = sample['meta']['current_name'][0]
 
