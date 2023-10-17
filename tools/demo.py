@@ -170,6 +170,7 @@ def demo(cfg):
         engine.restart_engine()
         with torch.no_grad():
             for frame_idx, samples in enumerate(seq_dataloader):
+                
                 nvidia_smi.nvmlInit()
                 handle = nvidia_smi.nvmlDeviceGetHandleByIndex(gpu_id)
                 # card id 0 hardcoded here, there is also a call to get all available card ids, so we could iterate
@@ -177,6 +178,10 @@ def demo(cfg):
                 print("Total memory:", info.total)
                 print("Free memory:", info.free)
                 print("Used memory:", info.used)
+                if info.free < 358493440:
+                    gpu_id += 1
+                
+                
                 sample = samples[0]
                 img_name = sample['meta']['current_name'][0]
 
