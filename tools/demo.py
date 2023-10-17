@@ -159,7 +159,8 @@ def demo(cfg):
                                     num_workers=cfg.TEST_WORKERS,
                                     pin_memory=True)
 
-        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        #fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        fourcc = cv2.VideoWriter_fourcc(*'MP4V') ## RS EDIT
         output_video_path = os.path.join(
             output_root, '{}_{}fps.avi'.format(seq_name, video_fps))
 
@@ -248,8 +249,8 @@ def main():
     parser.add_argument('--stage', type=str, default='pre_ytb_dav')
     parser.add_argument('--model', type=str, default='swinb_deaotl')
 
-    #parser.add_argument('--gpu_id', type=int, default=0)
-    parser.add_argument('--gpu_id', type=str, default='0,1,2,3')
+    parser.add_argument('--gpu_id', type=int, default=0)
+    #parser.add_argument('--gpu_id', type=str, default='0,1,2,3')
 
     parser.add_argument('--data_path', type=str, default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/Dataset')
     parser.add_argument('--output_path', type=str, default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/Dataset/results')
