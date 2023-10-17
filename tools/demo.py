@@ -162,8 +162,10 @@ def demo(cfg):
 
         #fourcc = cv2.VideoWriter_fourcc(*'XVID')
         fourcc = cv2.VideoWriter_fourcc(*'MP4V') ## RS EDIT
+        # output_video_path = os.path.join(
+        #     output_root, '{}_{}fps.avi'.format(seq_name, video_fps))
         output_video_path = os.path.join(
-            output_root, '{}_{}fps.avi'.format(seq_name, video_fps))
+            output_root, '{}_{}fps.mp4'.format(seq_name, video_fps))
 
         print('Start the inference of sequence {}:'.format(seq_name))
         model.eval()
@@ -171,15 +173,15 @@ def demo(cfg):
         with torch.no_grad():
             for frame_idx, samples in enumerate(seq_dataloader):
                 
-                nvidia_smi.nvmlInit()
-                handle = nvidia_smi.nvmlDeviceGetHandleByIndex(gpu_id)
-                # card id 0 hardcoded here, there is also a call to get all available card ids, so we could iterate
-                info = nvidia_smi.nvmlDeviceGetMemoryInfo(handle)
-                print("Total memory:", info.total)
-                print("Free memory:", info.free)
-                print("Used memory:", info.used)
-                if info.free < 358493440:
-                    gpu_id += 1
+                # nvidia_smi.nvmlInit()
+                # handle = nvidia_smi.nvmlDeviceGetHandleByIndex(gpu_id)
+                # # card id 0 hardcoded here, there is also a call to get all available card ids, so we could iterate
+                # info = nvidia_smi.nvmlDeviceGetMemoryInfo(handle)
+                # print("Total memory:", info.total)
+                # print("Free memory:", info.free)
+                # print("Used memory:", info.used)
+                # if info.free < 358493440:
+                #     gpu_id += 1
                 
                 
                 sample = samples[0]
@@ -262,8 +264,8 @@ def main():
     parser.add_argument('--stage', type=str, default='pre_ytb_dav')
     parser.add_argument('--model', type=str, default='swinb_deaotl')
 
-    parser.add_argument('--gpu_id', type=int, default=0)
-    #parser.add_argument('--gpu_id', type=str, default='0,1,2,3')
+    #parser.add_argument('--gpu_id', type=int, default=0)
+    parser.add_argument('--gpu_id', type=str, default='cuda:0,1')
 
     parser.add_argument('--data_path', type=str, default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/Dataset')
     parser.add_argument('--output_path', type=str, default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/Dataset/results')
