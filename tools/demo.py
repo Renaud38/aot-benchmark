@@ -265,7 +265,7 @@ def main():
     parser.add_argument('--model', type=str, default='swinb_deaotl')
 
     #parser.add_argument('--gpu_id', type=int, default=0)
-    parser.add_argument('--gpu_id', type=str, default='cuda:0,1')
+    parser.add_argument('--gpu_id', type=int, default=np.array([0,1,2,3]))
 
     parser.add_argument('--data_path', type=str, default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/Dataset')
     parser.add_argument('--output_path', type=str, default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/Dataset/results')
