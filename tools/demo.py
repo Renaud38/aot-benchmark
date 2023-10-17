@@ -248,7 +248,8 @@ def main():
     parser.add_argument('--stage', type=str, default='pre_ytb_dav')
     parser.add_argument('--model', type=str, default='swinb_deaotl')
 
-    parser.add_argument('--gpu_id', type=int, default=1)
+    #parser.add_argument('--gpu_id', type=int, default=0)
+    parser.add_argument('--gpu_id', type=str, default='0,1,2,3')
 
     parser.add_argument('--data_path', type=str, default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/Dataset')
     parser.add_argument('--output_path', type=str, default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/Dataset/results')
@@ -256,7 +257,7 @@ def main():
                         type=str,
                         default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/weights/SwinB_DeAOTL_PRE_YTB_DAV.pth')
 
-    parser.add_argument('--max_resolution', type=float, default=480 * 5)
+    parser.add_argument('--max_resolution', type=float, default=480 * 5) ## Change value here higher then 5 to get better resoltuion 
 
     parser.add_argument('--amp', action='store_true')
     parser.set_defaults(amp=False)
