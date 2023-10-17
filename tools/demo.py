@@ -1,7 +1,7 @@
 import importlib
 import sys
 import os
-import nvidia_smi ## RS EDIT
+import nvidia-smi ## RS EDIT
 
 sys.path.append('.')
 sys.path.append('..')
