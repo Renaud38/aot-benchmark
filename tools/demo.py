@@ -111,8 +111,8 @@ def demo(cfg):
     model = build_vos_model(cfg.MODEL_VOS, cfg).cuda()
     
     print('Load checkpoint from {}'.format(cfg.TEST_CKPT_PATH))
-    #model, _ = load_network(model, cfg.TEST_CKPT_PATH, gpu_id)
-    model, _ = load_network(model, cfg.TEST_CKPT_PATH)
+    model, _ = load_network(model, cfg.TEST_CKPT_PATH, gpu_id)
+    #model, _ = load_network(model, cfg.TEST_CKPT_PATH)
     
     print('Build AOT engine.')
     engine = build_engine(cfg.MODEL_ENGINE,
@@ -268,8 +268,8 @@ def main():
     parser.add_argument('--stage', type=str, default='pre_ytb_dav')
     parser.add_argument('--model', type=str, default='swinb_deaotl')
 
-    #parser.add_argument('--gpu_id', type=int, default=0)
-    parser.add_argument('--gpu_id', type=int, default=np.array([0,1,2,3]))
+    parser.add_argument('--gpu_id', type=int, default=0)
+    #parser.add_argument('--gpu_id', type=int, default=np.array([0,1,2,3]))
 
     parser.add_argument('--data_path', type=str, default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/Dataset')
     parser.add_argument('--output_path', type=str, default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/Dataset/results')
