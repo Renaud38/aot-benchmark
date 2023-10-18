@@ -234,6 +234,9 @@ def demo(cfg):
                     _pred_label = F.interpolate(pred_label,
                                                 size=engine.input_size_2d,
                                                 mode="nearest")
+                    
+                    _pred_label = _pred_label.cuda(gpu_id) #jacqueline add: relocate the tensor back to cuda:0
+                    
                     # update memory
                     engine.update_memory(_pred_label)
 
