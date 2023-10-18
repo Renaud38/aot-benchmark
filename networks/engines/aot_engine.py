@@ -566,14 +566,14 @@ class AOTInferEngine(nn.Module):
         if len(all_logits) == 1:
             return all_logits[0]
 
-        fg_probs1,  fg_probs2 = [], []
-        bg_probs1, bg_probs2 = [], []
+        #fg_probs1,  fg_probs2 = [], []
+        #bg_probs1, bg_probs2 = [], []
         fg_probs = []
         bg_probs = []
 
-        total_num = len(all_logits)
-        batch_size = total_num // 2
-        print('batch size', batch_size)
+        #total_num = len(all_logits)
+        #batch_size = total_num // 2
+        #print('batch size', batch_size)
 
         
         i = 0
