@@ -184,7 +184,8 @@ def demo(cfg):
                 print("Total memory:", info.total)
                 print("Free memory:", info.free)
                 print("Used memory:", info.used)
-                if info.free < 358493440:
+                print("gpu id:", gpu_id)
+                if info.free < 1073741824: # if less than GB go to next GPU
                     gpu_id += 1
                 
                 
@@ -235,7 +236,7 @@ def demo(cfg):
                                                 size=engine.input_size_2d,
                                                 mode="nearest")
                     
-                    _pred_label = _pred_label.cuda(gpu_id) #jacqueline add: relocate the tensor back to cuda:0
+                    _pred_label = _pred_label.cuda(gpu_id) #jacqueline add: relocate the tensor back to default GPU
                     
                     # update memory
                     engine.update_memory(_pred_label)
