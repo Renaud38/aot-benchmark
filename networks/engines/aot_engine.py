@@ -607,7 +607,7 @@ class AOTInferEngine(nn.Module):
         print('merged_logit2 size: ', merged_logit2.element_size()*merged_logit2.nelement(), 'bytes')
 
         merged_logit1 = merged_logit1.to('cuda:2')
-        gathered_logits = torch.cat([merged_logit1, merged_logit2], dim=0)
+        gathered_logits = torch.cat([merged_logit1, merged_logit2], dim=1)
                                  
         merged_logit = gathered_logits.to('cuda:2')
         
