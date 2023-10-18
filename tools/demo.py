@@ -108,11 +108,28 @@ def demo(cfg):
     # Load pre-trained model
     print('Build AOT model.')
     #model = build_vos_model(cfg.MODEL_VOS, cfg).cuda(gpu_id)
-    model = build_vos_model(cfg.MODEL_VOS, cfg).cuda()
-    
+    model = build_vos_model(cfg.MODEL_VOS, cfg)
+
+    ## jacqueine edit
+    print('first step')
+    num_GPU = torch.cuda.device_count() # count the GPU that you have
+    if num_GPU > 1:
+        multiple_device = [f'cuda:{i} for i in range(num_GPU)]
+        print('available devices',multiple_device)
+        model = torch.nn.DataParallel(model, device_ids=multiple_device)
+   
     print('Load checkpoint from {}'.format(cfg.TEST_CKPT_PATH))
+    
     model, _ = load_network(model, cfg.TEST_CKPT_PATH, gpu_id)
-    #model, _ = load_network(model, cfg.TEST_CKPT_PATH)
+
+    
+    ## jacqueine edit
+    print('second step')
+    num_GPU = torch.cuda.device_count() # count the GPU that you have
+    if num_GPU > 1:
+        multiple_device = [f'cuda:{i} for i in range(num_GPU)]
+        print('available devices',multiple_device)
+        model = torch.nn.DataParallel(model, device_ids=multiple_device)
     
     print('Build AOT engine.')
     engine = build_engine(cfg.MODEL_ENGINE,
