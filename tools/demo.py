@@ -1,4 +1,4 @@
- fimport importlib
+import importlib
 import sys
 import os
 import nvidia_smi ## RS EDIT
