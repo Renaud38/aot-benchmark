@@ -568,6 +568,8 @@ class AOTInferEngine(nn.Module):
 
         fg_probs1,  fg_probs2 = [], []
         bg_probs1, bg_probs2 = [], []
+        fg_probs = []
+        bg_probs = []
 
         total_num = len(all_logits)
         batch_size = total_num // 2
@@ -577,39 +579,45 @@ class AOTInferEngine(nn.Module):
         i = 0
         for logit in all_logits:
             print('all_logits: ' ,i)
-            if i < batch_size:
-                prob = torch.softmax(logit, dim=1)
-                prob = prob.to('cuda:1')
-                bg_probs1.append(prob[:, 0:1])
-                fg_probs1.append(prob[:, 1:1 + self.max_aot_obj_num])
-            elif i >= batch_size:
-                prob = torch.softmax(logit, dim=1)
-                prob = prob.to('cuda:2')
-                bg_probs2.append(prob[:, 0:1])
-                fg_probs2.append(prob[:, 1:1 + self.max_aot_obj_num])               
+            #if i < batch_size:
+            #    prob = torch.softmax(logit, dim=1)
+            #    prob = prob.to('cuda:1')
+            #    bg_probs1.append(prob[:, 0:1])
+            #    fg_probs1.append(prob[:, 1:1 + self.max_aot_obj_num])
+            #elif i >= batch_size:
+            #    prob = torch.softmax(logit, dim=1)
+            #    prob = prob.to('cuda:2')
+            #    bg_probs2.append(prob[:, 0:1])
+            #    fg_probs2.append(prob[:, 1:1 + self.max_aot_obj_num])               
             i += 1    
                 
-            #prob = torch.softmax(logit, dim=1)
-            #bg_probs.append(prob[:, 0:1])
-            #fg_probs.append(prob[:, 1:1 + self.max_aot_obj_num])
-
-        bg_prob1 = torch.prod(torch.cat(bg_probs1, dim=1), dim=1, keepdim=True)
-        merged_prob1 = torch.cat([bg_prob1] + fg_probs1,
-                                dim=1).clamp(1e-5, 1 - 1e-5)
-        merged_logit1 = torch.logit(merged_prob1)
+            prob = torch.softmax(logit, dim=1)
+            prob = prob.to('cuda:2')
+            bg_probs.append(prob[:, 0:1])
+            fg_probs.append(prob[:, 1:1 + self.max_aot_obj_num])
         
-        bg_prob2 = torch.prod(torch.cat(bg_probs2, dim=1), dim=1, keepdim=True)
-        merged_prob2 = torch.cat([bg_prob2] + fg_probs2,
+        bg_prob = torch.prod(torch.cat(bg_probs, dim=1), dim=1, keepdim=True)
+        merged_prob = torch.cat([bg_prob] + fg_probs,
                                 dim=1).clamp(1e-5, 1 - 1e-5)
-        merged_logit2 = torch.logit(merged_prob2)
+        merged_logit = torch.logit(merged_prob)
+        
+        #bg_prob1 = torch.prod(torch.cat(bg_probs1, dim=1), dim=1, keepdim=True)
+        #merged_prob1 = torch.cat([bg_prob1] + fg_probs1,
+                                dim=1).clamp(1e-5, 1 - 1e-5)
+        #merged_logit1 = torch.logit(merged_prob1)
+        
+        #bg_prob2 = torch.prod(torch.cat(bg_probs2, dim=1), dim=1, keepdim=True)
+        #merged_prob2 = torch.cat([bg_prob2] + fg_probs2,
+                                dim=1).clamp(1e-5, 1 - 1e-5)
+        #merged_logit2 = torch.logit(merged_prob2)
 
-        print('merged_logit1 size: ', merged_logit1.element_size()*merged_logit1.nelement(), 'bytes')
-        print('merged_logit2 size: ', merged_logit2.element_size()*merged_logit2.nelement(), 'bytes')
+        #print('merged_logit1 size: ', merged_logit1.element_size()*merged_logit1.nelement(), 'bytes')
+        #print('merged_logit2 size: ', merged_logit2.element_size()*merged_logit2.nelement(), 'bytes')
 
-        merged_logit1 = merged_logit1.to('cuda:2')
-        gathered_logits = torch.cat([merged_logit1, merged_logit2], dim=1)
+        #merged_logit1 = merged_logit1.to('cuda:2')
+        #gathered_logits = torch.cat([merged_logit1, merged_logit2], dim=1)
                                  
-        merged_logit = gathered_logits.to('cuda:2')
+        #merged_logit = gathered_logits.to('cuda:2')
         
         return merged_logit
 
