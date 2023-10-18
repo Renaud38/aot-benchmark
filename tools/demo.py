@@ -1,4 +1,4 @@
-import importlib
+ fimport importlib
 import sys
 import os
 import nvidia_smi ## RS EDIT
@@ -122,6 +122,8 @@ def demo(cfg):
                           gpu_id=gpu_id,
                           long_term_mem_gap=cfg.TEST_LONG_TERM_MEM_GAP)
 
+    engine = engine.cuda('cuda:3') # jacqueline add: move engine to cuda: 3
+
     # Prepare datasets for each sequence
     transform = transforms.Compose([
         tr.MultiRestrictSize(cfg.TEST_MIN_SIZE, cfg.TEST_MAX_SIZE,
@@ -185,8 +187,8 @@ def demo(cfg):
                 print("Free memory:", info.free)
                 print("Used memory:", info.used)
                 print("gpu id:", gpu_id)
-                if info.free < 1073741824: # if less than GB go to next GPU
-                    gpu_id += 1
+                #if info.free < 1073741824: # if less than GB go to next GPU
+                #    gpu_id += 1
                 
                 
                 sample = samples[0]
