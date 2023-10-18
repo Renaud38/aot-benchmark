@@ -221,16 +221,16 @@ def demo(cfg):
                                                   size=current_img.size()[2:],
                                                   mode="nearest")
                     # add reference frame
-                    engine.add_reference_frame(current_img,
-                                               current_label,
+                    engine.add_reference_frame(current_img.cuda('cuda:3'),
+                                               current_label.cuda('cuda:3'),
                                                frame_step=0,
                                                obj_nums=obj_nums)
                 else:
                     print('Processing image {}...'.format(img_name))
                     # predict segmentation
-                    engine.match_propogate_one_frame(current_img)
+                    engine.match_propogate_one_frame(current_img.cuda('cuda:3'))
                     pred_logit = engine.decode_current_logits(
-                        (output_height, output_width))
+                        (output_height.cuda('cuda:3'), output_width.cuda('cuda:3')))
                     pred_prob = torch.softmax(pred_logit, dim=1)
                     pred_label = torch.argmax(pred_prob, dim=1,
                                               keepdim=True).float()
@@ -241,7 +241,7 @@ def demo(cfg):
                     _pred_label = _pred_label.cuda(gpu_id) #jacqueline add: relocate the tensor back to default GPU
                     
                     # update memory
-                    engine.update_memory(_pred_label)
+                    engine.update_memory(_pred_label.cuda('cuda:3'))
 
                     # save results
                     input_image_path = os.path.join(image_seq_root, img_name)
