@@ -109,28 +109,11 @@ def demo(cfg):
     print('Build AOT model.')
     #model = build_vos_model(cfg.MODEL_VOS, cfg).cuda(gpu_id)
     model = build_vos_model(cfg.MODEL_VOS, cfg)
-
-    ## jacqueine edit
-    print('first step')
-    num_GPU = torch.cuda.device_count() # count the GPU that you have
-    if num_GPU > 1:
-        multiple_device = [f'cuda:{i}' for i in range(num_GPU)]
-        print('available devices',multiple_device)
-        model = torch.nn.DataParallel(model, device_ids=multiple_device)
    
     print('Load checkpoint from {}'.format(cfg.TEST_CKPT_PATH))
     
     model, _ = load_network(model, cfg.TEST_CKPT_PATH, gpu_id)
 
-    
-    ## jacqueine edit
-    
-    print('second step')
-    num_GPU = torch.cuda.device_count() # count the GPU that you have
-    if num_GPU > 1:
-        multiple_device = [f'cuda:{i}' for i in range(num_GPU)]
-        print('available devices',multiple_device)
-        model = torch.nn.DataParallel(model, device_ids=multiple_device)
     
     print('Build AOT engine.')
     engine = build_engine(cfg.MODEL_ENGINE,
@@ -194,14 +177,13 @@ def demo(cfg):
         engine.restart_engine()
         with torch.no_grad():
             for frame_idx, samples in enumerate(seq_dataloader):
-                
-                # nvidia_smi.nvmlInit()
-                # handle = nvidia_smi.nvmlDeviceGetHandleByIndex(gpu_id)
-                # # card id 0 hardcoded here, there is also a call to get all available card ids, so we could iterate
-                # info = nvidia_smi.nvmlDeviceGetMemoryInfo(handle)
-                # print("Total memory:", info.total)
-                # print("Free memory:", info.free)
-                # print("Used memory:", info.used)
+                 nvidia_smi.nvmlInit()
+                 handle = nvidia_smi.nvmlDeviceGetHandleByIndex(gpu_id)
+                 # card id 0 hardcoded here, there is also a call to get all available card ids, so we could iterate
+                 info = nvidia_smi.nvmlDeviceGetMemoryInfo(handle)
+                 print("Total memory:", info.total)
+                 print("Free memory:", info.free)
+                 print("Used memory:", info.used)
                 # if info.free < 358493440:
                 #     gpu_id += 1
                 
