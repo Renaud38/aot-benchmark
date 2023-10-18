@@ -114,7 +114,7 @@ def demo(cfg):
     print('first step')
     num_GPU = torch.cuda.device_count() # count the GPU that you have
     if num_GPU > 1:
-        multiple_device = [f'cuda:{i} for i in range(num_GPU)]
+        multiple_device = [f'cuda:{i}' for i in range(num_GPU)]
         print('available devices',multiple_device)
         model = torch.nn.DataParallel(model, device_ids=multiple_device)
    
@@ -124,10 +124,11 @@ def demo(cfg):
 
     
     ## jacqueine edit
+    
     print('second step')
     num_GPU = torch.cuda.device_count() # count the GPU that you have
     if num_GPU > 1:
-        multiple_device = [f'cuda:{i} for i in range(num_GPU)]
+        multiple_device = [f'cuda:{i}' for i in range(num_GPU)]
         print('available devices',multiple_device)
         model = torch.nn.DataParallel(model, device_ids=multiple_device)
     
