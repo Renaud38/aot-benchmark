@@ -602,11 +602,12 @@ class AOTInferEngine(nn.Module):
         merged_prob2 = torch.cat([bg_prob2] + fg_probs2,
                                 dim=1).clamp(1e-5, 1 - 1e-5)
         merged_logit2 = torch.logit(merged_prob2)
-        
-        gathered_logits = torch.cat([merged_logit1, merged_logit2], dim=0)
+
         print('merged_logit1 size: ', merged_logit1.element_size()*merged_logit1.nelement(), 'bytes')
         print('merged_logit2 size: ', merged_logit2.element_size()*merged_logit2.nelement(), 'bytes')
-                                    
+           
+        gathered_logits = torch.cat([merged_logit1, merged_logit2], dim=0)
+                                 
         merged_logit = gathered_logits.to('cuda:0')
         
         return merged_logit
