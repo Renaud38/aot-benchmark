@@ -597,18 +597,15 @@ class AOTInferEngine(nn.Module):
             fg_probs.append(prob[:, 1:1 + self.max_aot_obj_num])
         
         bg_prob = torch.prod(torch.cat(bg_probs, dim=1), dim=1, keepdim=True)
-        merged_prob = torch.cat([bg_prob] + fg_probs,
-                                dim=1).clamp(1e-5, 1 - 1e-5)
+        merged_prob = torch.cat([bg_prob] + fg_probs, dim=1).clamp(1e-5, 1 - 1e-5)
         merged_logit = torch.logit(merged_prob)
         
         #bg_prob1 = torch.prod(torch.cat(bg_probs1, dim=1), dim=1, keepdim=True)
-        #merged_prob1 = torch.cat([bg_prob1] + fg_probs1,
-                                dim=1).clamp(1e-5, 1 - 1e-5)
+        #merged_prob1 = torch.cat([bg_prob1] + fg_probs1, dim=1).clamp(1e-5, 1 - 1e-5)
         #merged_logit1 = torch.logit(merged_prob1)
         
         #bg_prob2 = torch.prod(torch.cat(bg_probs2, dim=1), dim=1, keepdim=True)
-        #merged_prob2 = torch.cat([bg_prob2] + fg_probs2,
-                                dim=1).clamp(1e-5, 1 - 1e-5)
+        #merged_prob2 = torch.cat([bg_prob2] + fg_probs2, dim=1).clamp(1e-5, 1 - 1e-5)
         #merged_logit2 = torch.logit(merged_prob2)
 
         #print('merged_logit1 size: ', merged_logit1.element_size()*merged_logit1.nelement(), 'bytes')
