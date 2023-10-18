@@ -566,19 +566,47 @@ class AOTInferEngine(nn.Module):
         if len(all_logits) == 1:
             return all_logits[0]
 
-        fg_probs = []
-        bg_probs = []
+        fg_probs1,  fg_probs2 = [], []
+        bg_probs1, bg_probs2 = [], []
 
+        total_num = len(all_logits)
+        batch_size = total_num // 2
+        print('batch size', batch_size)
+
+        
+        i = 0
         for logit in all_logits:
-            prob = torch.softmax(logit, dim=1)
-            bg_probs.append(prob[:, 0:1])
-            fg_probs.append(prob[:, 1:1 + self.max_aot_obj_num])
+            print('all_logits: ' ,i)
+            if i < batch_size:
+                prob = torch.softmax(logit, dim=1)
+                prob = prob.to('cuda:1')
+                bg_probs1.append(prob[:, 0:1])
+                fg_probs1.append(prob[:, 1:1 + self.max_aot_obj_num])
+            elif i >= batch_size:
+                prob = torch.softmax(logit, dim=1)
+                prob = prob.to('cuda:2')
+                bg_probs2.append(prob[:, 0:1])
+                fg_probs2.append(prob[:, 1:1 + self.max_aot_obj_num])               
+            i += 1    
+                
+            #prob = torch.softmax(logit, dim=1)
+            #bg_probs.append(prob[:, 0:1])
+            #fg_probs.append(prob[:, 1:1 + self.max_aot_obj_num])
 
-        bg_prob = torch.prod(torch.cat(bg_probs, dim=1), dim=1, keepdim=True)
-        merged_prob = torch.cat([bg_prob] + fg_probs,
+        bg_prob1 = torch.prod(torch.cat(bg_probs1, dim=1), dim=1, keepdim=True)
+        merged_prob1 = torch.cat([bg_prob1] + fg_probs1,
                                 dim=1).clamp(1e-5, 1 - 1e-5)
-        merged_logit = torch.logit(merged_prob)
-
+        merged_logit1 = torch.logit(merged_prob1)
+        
+        bg_prob2 = torch.prod(torch.cat(bg_probs2, dim=1), dim=1, keepdim=True)
+        merged_prob2 = torch.cat([bg_prob2] + fg_probs2,
+                                dim=1).clamp(1e-5, 1 - 1e-5)
+        merged_logit2 = torch.logit(merged_prob2)
+        
+        gathered_logits = torch.cat([merged_logit1, merged_logit2], dim=0)
+                                    
+        merged_logit = gathered_logits.to('cuda:0')
+        
         return merged_logit
 
     def add_reference_frame(self, img, mask, obj_nums, frame_step=-1):
