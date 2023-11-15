@@ -85,10 +85,6 @@ def overlay(image, mask, colors=[255, 0, 0], cscale=1, alpha=0.4):
 
     for object_id in object_ids[1:]:
         # Overlay color on  binary mask
-
-        print(image.shape)
-        print(np.ones(image.shape).shape)
-        print(np.array(colors[object_id]).shape)
         
         foreground = image * alpha + np.ones(
             image.shape) * (1 - alpha) * np.array(colors[object_id])
