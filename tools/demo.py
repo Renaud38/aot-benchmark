@@ -88,7 +88,7 @@ def overlay(image, mask, colors=[255, 0, 0], cscale=1, alpha=0.4):
 
         print(image.shape)
         print(np.ones(image.shape).shape)
-        print(np.array(colors[object_id])).shape
+        print(np.array(colors[object_id]).shape)
         
         foreground = image * alpha + np.ones(
             image.shape) * (1 - alpha) * np.array(colors[object_id])
