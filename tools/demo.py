@@ -132,7 +132,7 @@ def demo(cfg):
         tr.MultiToTensor()
     ])
     image_root = os.path.join(cfg.TEST_DATA_PATH, 'img_og')
-    label_root = os.path.join(cfg.TEST_DATA_PATH, 'labels_og')
+    label_root = os.path.join(cfg.TEST_DATA_PATH, 'label_og')
 
     sequences = os.listdir(image_root)
     seq_datasets = []
