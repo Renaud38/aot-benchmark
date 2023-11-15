@@ -131,8 +131,8 @@ def demo(cfg):
                              cfg.MODEL_ALIGN_CORNERS),
         tr.MultiToTensor()
     ])
-    image_root = os.path.join(cfg.TEST_DATA_PATH, 'images')
-    label_root = os.path.join(cfg.TEST_DATA_PATH, 'labels')
+    image_root = os.path.join(cfg.TEST_DATA_PATH, 'img_og')
+    label_root = os.path.join(cfg.TEST_DATA_PATH, 'labels_og')
 
     sequences = os.listdir(image_root)
     seq_datasets = []
