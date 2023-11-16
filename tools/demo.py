@@ -283,7 +283,7 @@ def main():
                         type=str,
                         default='/mnt/s3bucket/alector-immuno-neurology/DeAOT/weights/SwinB_DeAOTL_PRE_YTB_DAV.pth')
 
-    parser.add_argument('--max_resolution', type=float, default=480 * 3) ## Change value here higher then 5 to get better resoltuion 
+    parser.add_argument('--max_resolution', type=float, default=480 * 8) ## Change value here higher then 5 to get better resoltuion 
 
     parser.add_argument('--amp', action='store_true')
     parser.set_defaults(amp=False)
